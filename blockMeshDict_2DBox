@@ -1,0 +1,99 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+//Prepared by Dr Harikrishnan S, CUSAT, Email: harikrishnans@cusat.ac.in
+// ! Warning:- Rename the file name to 'blockMeshDict' !//
+//Copy paste (replace) this file in system folder of 2D channel flow tutorial
+
+
+convertToMeters 0.1;
+
+
+//*************Length values as variable*************//
+Lx  4; //Length in x-direction
+Ly  4; //Length in y-direction 
+Lz  2; //Length in z-direction
+//**************************************************//
+
+
+//*************Mesh size as variable*************//
+nx 40; //Number of divisions in x-direction
+ny 25; //Number of divisions in y-direction
+nz 1;  //Number of divisions in z-direction
+//***********************************************//
+vertices
+(
+    (0 0 0)
+    ($Lx 0 0)
+    (0 $Ly 0)
+    ($Lx $Ly 0)
+    (0 0 $Lz)
+    ($Lx 0 $Lz)
+    (0 $Ly $Lz)
+    ($Lx $Ly $Lz)
+);
+
+blocks
+(
+    hex (0 1 3 2 4 5 7 6) ($nx $ny $nz) simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+    bottomWall
+    {
+        type            wall;
+        faces           ((0 1 5 4));
+    }
+    topWall
+    {
+        type            wall;
+        faces           ((2 6 7 3));
+    }
+    
+	back
+    {
+        type            empty;
+        faces           ((0 2 3 1));
+    }
+	front
+    {
+        type            empty;
+        faces           ((4 5 7 6));
+    }
+    
+    inlet
+    {
+        type            patch;
+        faces           ((0 4 6 2));
+    }
+    outlet
+    {
+        type            patch;
+        faces           ((1 3 7 5));
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //
